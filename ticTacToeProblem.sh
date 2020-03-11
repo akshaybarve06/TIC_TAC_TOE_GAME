@@ -55,9 +55,15 @@ wantToPlay(){
 	read -p "Would You Like To Toss Y/N ?" isToss
 	if [[ $isToss == Y || $isToss == y ]]; then
 		toss
+		startToPlay
 	else
 		echo "Okay..Starting Game"
+		startToPlay
 	fi
+}
+
+startToPlay(){
+displayBoard
 }
 
 initializeBoard
