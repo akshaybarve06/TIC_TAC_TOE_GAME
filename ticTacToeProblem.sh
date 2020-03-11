@@ -7,15 +7,18 @@
 
 declare -A board
 
+playerOne="a"
+playerTwo="a"
 player="a"
 turn=0
+cPosition=0
 noOfRows=3
 noOfColumns=3
 
 initializeBoard(){
 	for (( r=0; r<$noOfRows; r++ )); do
-		for ((c=0; c<$noOfColumns; c++ ));	do
-			board[$r,$c]="-"
+		for ((c=0; c<$noOfColumns; c++ ));do
+			board[$r,$c]="+"
 		done
 	done
 }
@@ -31,94 +34,150 @@ displayBoard(){
 	echo "---------------"
 }
 
-letterAssign(){
-		playerOne="X"
-      playerTwo="O"
-}
-
 startToPlay(){
-	letterAssign
-	while [[ $turn -lt 9 && $isWon -eq 0 ]]
+	playerOne="X"
+	playerTwo="O"
+
+	while [[ $turn -lt 9 && $checkWinFlag -eq 0 ]]
 	do
 	if [[ $(($turn%2)) -eq 0 ]]; then
-		read -p "Player 1 Enter Position" position
+		read -p "Enter Your Choice ==>" position
 		player=$playerOne
 	else
 		position=$(computerTurn)
+		echo "Computer's Choice ==>"$position
 		player=$playerTwo
 	fi
+	((turn++))
 	case $position in
 	0)
 		board[0,0]=$player;;
 	1)
-            board[0,1]=$player;;
-         2)
-            board[0,2]=$player;;
-         3)
-            board[1,0]=$player;;
-         4)
-            board[1,1]=$player;;
-         5)
-            board[1,2]=$player;;
-         6)
-            board[2,0]=$player;;
-         7)
-            board[2,1]=$player;;
-         8)
-            board[2,2]=$player;;
-	*)
-		echo Invalid Position
-		((turn--))
-	;;
+		board[0,1]=$player;;
+	2)
+		board[0,2]=$player;;
+	3)
+		board[1,0]=$player;;
+	4)
+		board[1,1]=$player;;
+	5)
+		board[1,2]=$player;;
+	6)
+		board[2,0]=$player;;
+	7)
+		board[2,1]=$player;;
+	8)
+		board[2,2]=$player;;
 	esac
-	((turn++))
 	checkWin
 	displayBoard
-	if [[ $player == X && $isWon -eq 1 ]]; then
- 		echo "Player 1 Won.."
-	elif [[ $player == O && $isWon -eq 1 ]]; then
- 		echo "Player 2 (Computer) Won.."
-	elif [[ $turn -eq 9 ]]; then
- 		echo "Match Tied"
-   	fi
 	done
 }
 
 checkWin(){
 	if [[ ${board[0,0]} == $player && ${board[0,1]} == $player &&  ${board[0,2]} == $player ]]; then
-		isWon=1
+		checkWinFlag=1
 	elif [[ ${board[1,0]} == $player && ${board[1,1]} == $player &&  ${board[1,2]} == $player ]]; then
-      		isWon=1
+      		checkWinFlag=1
 	elif [[ ${board[2,0]} == $player && ${board[2,1]} == $player &&  ${board[2,2]} == $player ]]; then
-      		isWon=1
+      		checkWinFlag=1
 	elif [[ ${board[0,0]} == $player && ${board[1,0]} == $player &&  ${board[2,0]} == $player ]]; then
-      		isWon=1
+      		checkWinFlag=1
 	elif [[ ${board[0,1]} == $player && ${board[1,1]} == $player &&  ${board[2,1]} == $player ]]; then
-      		isWon=1
+      		checkWinFlag=1
 	elif [[ ${board[0,2]} == $player && ${board[1,2]} == $player &&  ${board[2,2]} == $player ]]; then
-      		isWon=1
+      		checkWinFlag=1
 	elif [[ ${board[0,0]} == $player && ${board[1,1]} == $player &&  ${board[2,2]} == $player ]]; then
-      		isWon=1
+      		checkWinFlag=1
 	elif [[ ${board[0,2]} == $player && ${board[1,1]} == $player &&  ${board[2,0]} == $player ]]; then
-      		isWon=1
+      		checkWinFlag=1
 	fi
-	if [[ $turns -eq 9 ]]; then
-	 echo "Match Tied"
-	fi
+	if [[ $player == X && $checkWinFlag -eq 1 ]]; then
+		echo "Player 1 Won.."
+	elif [[ $player == O && $checkWinFlag -eq 1 ]]; then
+		echo "Player 2 (Computer) Won.."
+	elif [[ $turn -eq 9 ]]; then
+		echo "Match Tied"
+   	fi
 }
 
 computerTurn(){
-		generatedNum=$((RANDOM%8))
+		generatedNum=$((RANDOM%9))
 		r=$(($generatedNum/3))
-      		c=$(($generatedNum%3))
-		if [[ ${board[$r,$c]} ==  X || ${board[$r,$c]} == O ]]; then
+      c=$(($generatedNum%3))
+
+		if [[ ${board[$r,$c]} ==  $playerOne || ${board[$r,$c]} == $playerTwo ]]; then
 			computerTurn
-		elif [[ ${board[$r,$c]} == - ]]; then
+		elif [[ ${board[$r,$c]} == + ]]; then
+#			checkBeforePlay
 			cPosition=$generatedNum
+			checkBeforePlay
+			echo $cPosition
+			return
 		fi
-	echo $cPosition
 }
 
+checkBeforePlay(){
+		if [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "+" ]]; then
+			board[0,2]=$playerTwo
+		elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "+" ]]; then
+			board[1,2]=$playerTwo
+		elif [[ ${board[2,0]} == "$playerTwo"  && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "+" ]]; then
+			board[0,2]=$playerTwo
+
+		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "+" ]]; then
+			board[2,0]=$playerTwo
+		elif [[ ${board[0,1]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "+" ]]; then
+			board[2,2]=$playerTwo
+		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "+" ]]; then
+			board[2,2]=$playerTwo
+
+		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "+" ]]; then
+			board[2,2]=$playerTwo
+		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "+" ]]; then
+			board[2,0]=$playerTwo
+
+
+		elif [[ ${board[0,0]} == "+"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "$playerTwo" ]]; then
+			board[0,0]=$playerTwo
+		elif [[ ${board[1,0]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" ]]; then
+			board[1,0]=$playerTwo
+		elif [[ ${board[2,0]} == "+"  && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
+			board[2,0]=$playerTwo
+
+		elif [[ ${board[0,0]} == "+"  && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]; then
+			board[0,0]=$playerTwo
+		elif [[ ${board[0,1]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" ]]; then
+			board[0,1]=$playerTwo
+		elif [[ ${board[0,2]} == "+"  && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
+			board[0,2]=$playerTwo
+
+		elif [[ ${board[0,0]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
+			board[0,0]=$playerTwo
+		elif [[ ${board[0,2]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]; then
+			board[0,2]=$playerTwo
+
+
+		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "+" && ${board[0,2]} == "$playerTwo" ]]; then
+			board[0,1]=$playerTwo
+		elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[1,2]} == "$playerTwo" ]]; then
+			board[1,2]=$playerTwo
+		elif [[ ${board[2,0]} == "$playerTwo"  && ${board[2,1]} == "+" && ${board[2,2]} == "$playerTwo" ]]; then
+			board[2,1]=$playerTwo
+
+		elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,0]} == "+" && ${board[2,0]} == "$playerTwo" ]]; then
+			board[2,0]=$playerTwo
+		elif [[ ${board[0,1]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[2,1]} == "$playerTwo" ]]; then
+			board[1,1]=$playerTwo
+		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,2]} == "+" && ${board[2,2]} == "$playerTwo" ]]; then
+			board[1,2]=$playerTwo
+
+		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[2,2]} == "$playerTwo" ]]; then
+			board[1,1]=$playerTwo
+		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[2,0]} == "$playerTwo" ]]; then
+			board[1,1]=$playerTwo
+		fi
+}
 wantToPlay(){
    read -p "Would You Like To Start game Y/N ?" isStart
    if [[ $isStart == Y || $isStart == y ]]; then
@@ -126,11 +185,10 @@ wantToPlay(){
       	startToPlay
    else
       	echo "Exiting.."
-			exit
+	exit
    fi
 }
 
 initializeBoard
 displayBoard
 wantToPlay
-
