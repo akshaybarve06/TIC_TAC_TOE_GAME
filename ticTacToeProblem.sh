@@ -100,7 +100,6 @@ checkWin(){
 		echo "Match Tied"
    	fi
 }
-
 computerTurn(){
 		generatedNum=$((RANDOM%9))
 		r=$(($generatedNum/3))
@@ -109,14 +108,11 @@ computerTurn(){
 		if [[ ${board[$r,$c]} ==  $playerOne || ${board[$r,$c]} == $playerTwo ]]; then
 			computerTurn
 		elif [[ ${board[$r,$c]} == + ]]; then
-#			checkBeforePlay
-			cPosition=$generatedNum
 			checkBeforePlay
 			echo $cPosition
 			return
 		fi
 }
-
 checkBeforePlay(){
 		if [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "+" ]]; then
 			board[0,2]=$playerTwo
@@ -137,7 +133,6 @@ checkBeforePlay(){
 		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "+" ]]; then
 			board[2,0]=$playerTwo
 
-
 		elif [[ ${board[0,0]} == "+"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "$playerTwo" ]]; then
 			board[0,0]=$playerTwo
 		elif [[ ${board[1,0]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" ]]; then
@@ -157,7 +152,6 @@ checkBeforePlay(){
 		elif [[ ${board[0,2]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]; then
 			board[0,2]=$playerTwo
 
-
 		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "+" && ${board[0,2]} == "$playerTwo" ]]; then
 			board[0,1]=$playerTwo
 		elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[1,2]} == "$playerTwo" ]]; then
@@ -176,6 +170,8 @@ checkBeforePlay(){
 			board[1,1]=$playerTwo
 		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[2,0]} == "$playerTwo" ]]; then
 			board[1,1]=$playerTwo
+		else
+			cPosition=$generatedNum
 		fi
 }
 wantToPlay(){
