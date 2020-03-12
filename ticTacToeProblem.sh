@@ -15,6 +15,7 @@ cPosition=0
 noOfRows=3
 noOfColumns=3
 temporaryVar=0
+count=0
 
 initializeBoard(){
 	for (( r=0; r<$noOfRows; r++ )); do
@@ -109,84 +110,11 @@ checkWin(){
 		fi
 }
 computerTurn(){
-<<<<<<< HEAD
-		generatedNum=$((RANDOM%9))
-		r=$(($generatedNum/3))
-      c=$(($generatedNum%3))
-
-		if [[ ${board[$r,$c]} ==  $playerOne || ${board[$r,$c]} == $playerTwo ]]; then
-			computerTurn
-		elif [[ ${board[$r,$c]} == + ]]; then
-			checkBeforePlay
-			echo $cPosition
-=======
-		checkWinBlockPlay
->>>>>>> UC7_checkWinThenPlayMove
+		checkWinBlockPlay $playerTwoCPU
 			return
 }
-<<<<<<< HEAD
-checkBeforePlay(){
-		if [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "+" ]]; then
-			board[0,2]=$playerTwo
-		elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "+" ]]; then
-			board[1,2]=$playerTwo
-		elif [[ ${board[2,0]} == "$playerTwo"  && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "+" ]]; then
-			board[0,2]=$playerTwo
-
-		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "+" ]]; then
-			board[2,0]=$playerTwo
-		elif [[ ${board[0,1]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "+" ]]; then
-			board[2,2]=$playerTwo
-		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "+" ]]; then
-			board[2,2]=$playerTwo
-
-		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "+" ]]; then
-			board[2,2]=$playerTwo
-		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "+" ]]; then
-			board[2,0]=$playerTwo
-
-		elif [[ ${board[0,0]} == "+"  && ${board[0,1]} == "$playerTwo" && ${board[0,2]} == "$playerTwo" ]]; then
-			board[0,0]=$playerTwo
-		elif [[ ${board[1,0]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[1,2]} == "$playerTwo" ]]; then
-			board[1,0]=$playerTwo
-		elif [[ ${board[2,0]} == "+"  && ${board[2,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
-			board[2,0]=$playerTwo
-
-		elif [[ ${board[0,0]} == "+"  && ${board[1,0]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]; then
-			board[0,0]=$playerTwo
-		elif [[ ${board[0,1]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[2,1]} == "$playerTwo" ]]; then
-			board[0,1]=$playerTwo
-		elif [[ ${board[0,2]} == "+"  && ${board[1,2]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
-			board[0,2]=$playerTwo
-
-		elif [[ ${board[0,0]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[2,2]} == "$playerTwo" ]]; then
-			board[0,0]=$playerTwo
-		elif [[ ${board[0,2]} == "+"  && ${board[1,1]} == "$playerTwo" && ${board[2,0]} == "$playerTwo" ]]; then
-			board[0,2]=$playerTwo
-
-		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[0,1]} == "+" && ${board[0,2]} == "$playerTwo" ]]; then
-			board[0,1]=$playerTwo
-		elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[1,2]} == "$playerTwo" ]]; then
-			board[1,2]=$playerTwo
-		elif [[ ${board[2,0]} == "$playerTwo"  && ${board[2,1]} == "+" && ${board[2,2]} == "$playerTwo" ]]; then
-			board[2,1]=$playerTwo
-
-		elif [[ ${board[1,0]} == "$playerTwo"  && ${board[1,0]} == "+" && ${board[2,0]} == "$playerTwo" ]]; then
-			board[2,0]=$playerTwo
-		elif [[ ${board[0,1]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[2,1]} == "$playerTwo" ]]; then
-			board[1,1]=$playerTwo
-		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,2]} == "+" && ${board[2,2]} == "$playerTwo" ]]; then
-			board[1,2]=$playerTwo
-
-		elif [[ ${board[0,0]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[2,2]} == "$playerTwo" ]]; then
-			board[1,1]=$playerTwo
-		elif [[ ${board[0,2]} == "$playerTwo"  && ${board[1,1]} == "+" && ${board[2,0]} == "$playerTwo" ]]; then
-			board[1,1]=$playerTwo
-		else
-			cPosition=$generatedNum
-=======
 checkWinBlockPlay(){
-		playerVariable=$playerTwoCPU
+		playerVariable=$1
 
 		if [[ ${gameBoard[0,0]} == "$playerVariable"  && ${gameBoard[0,1]} == "$playerVariable" && ${gameBoard[0,2]} == "+" ]]; then
 			gameBoard[0,2]=$playerTwoCPU
@@ -245,7 +173,11 @@ checkWinBlockPlay(){
 		elif [[ ${gameBoard[0,2]} == "$playerVariable"  && ${gameBoard[1,1]} == "+" && ${gameBoard[2,0]} == "$playerVariable" ]]; then
 			gameBoard[1,1]=$playerTwoCPU
 		else
-			generatedNum=$((RANDOM%9))
+			if [[ $count -eq 0 ]]; then
+					((count++))
+					checkWinBlockPlay $playerOne
+			else
+				generatedNum=$((RANDOM%9))
       		r=$(($generatedNum/3))
       		c=$(($generatedNum%3))
 
@@ -255,10 +187,9 @@ checkWinBlockPlay(){
 					gameBoard[$r,$c]=$playerTwoCPU
          		return
      			fi
->>>>>>> UC7_checkWinThenPlayMove
+			fi
 		fi
 }
-
 wantToPlay(){
    read -p "Would You Like To Start game Y/N ?" isStart
    if [[ $isStart == Y || $isStart == y ]]; then
