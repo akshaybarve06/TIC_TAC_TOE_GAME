@@ -16,6 +16,8 @@ noOfRows=3
 noOfColumns=3
 temporaryVar=0
 count=0
+playerOne="X"
+playerTwoCPU="O"
 
 initializeBoard(){
 	for (( r=0; r<$noOfRows; r++ )); do
@@ -23,6 +25,8 @@ initializeBoard(){
 			gameBoard[$r,$c]="+"
 		done
 	done
+	echo "Player1 ==> X"
+	echo "Player2 ==> O"
 }
 displayBoard(){
 	for (( r=0; r<$noOfRows; r++ )); do
@@ -46,9 +50,6 @@ toss()
 	fi
 }
 startToPlay(){
-	playerOne="X"
-	playerTwoCPU="O"
-
 	while [[ $noOfTimePlay -lt 9 && $checkWinFlag -eq 0 ]]
 	do
 		if [[ $(($noOfTimePlay%2)) -eq $temporaryVar ]]; then
@@ -103,10 +104,16 @@ checkWin(){
 	elif [[ ${gameBoard[0,2]} == $player && ${gameBoard[1,1]} == $player &&  ${gameBoard[2,0]} == $player ]]; then
       		checkWinFlag=1
 	fi
-		if [[ $checkWinFlag -eq 1 ]]; then
-			echo "$player Won.."
+		if [[ $player == X && $checkWinFlag -eq 1 ]]; then
+			echo "Player1 Won.."
 			displayBoard
 			exit
+		elif [[ $player == O && $checkWinFlag -eq 1 ]]; then
+         echo "Player2 CPU Won.."
+         displayBoard
+         exit
+		elif [[ $noOfTimePlay -eq 9 ]]; then
+			echo "Match Tied.."
 		fi
 }
 computerTurn(){
@@ -180,25 +187,23 @@ checkWinBlockPlay(){
 		elif [[ ${gameBoard[0,0]} == "+" ]]; then
 			gameBoard[0,0]=$playerTwoCPU
 		elif [[ ${gameBoard[0,2]} == "+" ]]; then
-         		gameBoard[0,2]=$playerTwoCPU
-	      	elif [[ ${gameBoard[2,0]} == "+" ]]; then
-		 	gameBoard[2,0]=$playerTwoCPU
-	      	elif [[ ${gameBoard[2,2]} == "+" ]]; then
-		 	gameBoard[2,2]=$playerTwoCPU
+         gameBoard[0,2]=$playerTwoCPU
+      elif [[ ${gameBoard[2,0]} == "+" ]]; then
+         gameBoard[2,0]=$playerTwoCPU
+      elif [[ ${gameBoard[2,2]} == "+" ]]; then
+         gameBoard[2,2]=$playerTwoCPU
 		# Center
 		elif [[ ${gameBoard[1,1]} == "+" ]]; then
-         		gameBoard[1,1]=$playerTwoCPU
-		else
-			generatedNum=$((RANDOM%9))
-      			r=$(($generatedNum/3))
-      			c=$(($generatedNum%3))
-
-	      		if [[ ${gameBoard[$r,$c]} ==  $playerOne || ${gameBoard[$r,$c]} == $playerTwoCPU ]]; then
-		 		computerTurn
-	      		else
-				gameBoard[$r,$c]=$playerTwoCPU
-         		return
-     			fi
+         gameBoard[1,1]=$playerTwoCPU
+		# Sides
+		elif [[ ${gameBoard[0,1]} == "+" ]]; then
+         gameBoard[0,1]=$playerTwoCPU
+      elif [[ ${gameBoard[1,0]} == "+" ]]; then
+         gameBoard[1,0]=$playerTwoCPU
+      elif [[ ${gameBoard[1,2]} == "+" ]]; then
+         gameBoard[1,2]=$playerTwoCPU
+      elif [[ ${gameBoard[2,1]} == "+" ]]; then
+         gameBoard[2,1]=$playerTwoCPU
 		fi
 }
 wantToPlay(){
