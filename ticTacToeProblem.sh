@@ -172,11 +172,20 @@ checkWinBlockPlay(){
 			gameBoard[1,1]=$playerTwoCPU
 		elif [[ ${gameBoard[0,2]} == "$playerVariable"  && ${gameBoard[1,1]} == "+" && ${gameBoard[2,0]} == "$playerVariable" ]]; then
 			gameBoard[1,1]=$playerTwoCPU
-		else
-			if [[ $count -eq 0 ]]; then
+		# Recursively Call For Block Oppenent
+		elif [[ $count -eq 0 ]]; then
 					((count++))
 					checkWinBlockPlay $playerOne
-			else
+		# Corners
+		elif [[ ${gameBoard[0,0]} == "+" ]]; then
+			gameBoard[0,0]=$playerTwoCPU
+		elif [[ ${gameBoard[0,2]} == "+" ]]; then
+         gameBoard[0,2]=$playerTwoCPU
+      elif [[ ${gameBoard[2,0]} == "+" ]]; then
+         gameBoard[2,0]=$playerTwoCPU
+      elif [[ ${gameBoard[2,2]} == "+" ]]; then
+         gameBoard[2,2]=$playerTwoCPU
+		else
 				generatedNum=$((RANDOM%9))
       		r=$(($generatedNum/3))
       		c=$(($generatedNum%3))
@@ -187,7 +196,6 @@ checkWinBlockPlay(){
 					gameBoard[$r,$c]=$playerTwoCPU
          		return
      			fi
-			fi
 		fi
 }
 wantToPlay(){
