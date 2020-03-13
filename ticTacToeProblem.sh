@@ -3,7 +3,7 @@
 # @ Description: Tic Tac Toe Problem
 # @ Author: Akshay Dhananjay Barve
 # @ Version: 18.04.3 lts
-# @ Since: 11 March 2020 / Wednesday
+# @ Since: 12 March 2020 / Wednesday
 
 declare -A gameBoard
 
@@ -82,7 +82,7 @@ startToPlay(){
 done
 }
 checkWin(){
-	local	player=$1
+	local player=$1
 
 	if [[ ${gameBoard[0,0]} == $player && ${gameBoard[0,1]} == $player &&  ${gameBoard[0,2]} == $player ]]; then
 		checkWinFlag=1
@@ -126,13 +126,13 @@ checkWinBlockPlay(){
 			gameBoard[1,2]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[2,0]} == "$playerTwoCPU"  && ${gameBoard[2,1]} == "$playerTwoCPU" && ${gameBoard[2,2]} == "+" ]]; then
-			gameBoard[0,2]=$playerTwoCPU
+			gameBoard[2,2]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,0]} == "$playerTwoCPU"  && ${gameBoard[1,0]} == "$playerTwoCPU" && ${gameBoard[2,0]} == "+" ]]; then
 			gameBoard[2,0]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,1]} == "$playerTwoCPU"  && ${gameBoard[1,1]} == "$playerTwoCPU" && ${gameBoard[2,1]} == "+" ]]; then
-			gameBoard[2,2]=$playerTwoCPU
+			gameBoard[2,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,2]} == "$playerTwoCPU"  && ${gameBoard[1,2]} == "$playerTwoCPU" && ${gameBoard[2,2]} == "+" ]]; then
 			gameBoard[2,2]=$playerTwoCPU
@@ -172,13 +172,13 @@ checkWinBlockPlay(){
 			gameBoard[0,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[1,0]} == "$playerTwoCPU"  && ${gameBoard[1,1]} == "+" && ${gameBoard[1,2]} == "$playerTwoCPU" ]]; then
-			gameBoard[1,2]=$playerTwoCPU
+			gameBoard[1,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[2,0]} == "$playerTwoCPU"  && ${gameBoard[2,1]} == "+" && ${gameBoard[2,2]} == "$playerTwoCPU" ]]; then
 			gameBoard[2,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,0]} == "$playerTwoCPU"  && ${gameBoard[1,0]} == "+" && ${gameBoard[2,0]} == "$playerTwoCPU" ]]; then
-			gameBoard[2,0]=$playerTwoCPU
+			gameBoard[1,0]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,1]} == "$playerTwoCPU"  && ${gameBoard[1,1]} == "+" && ${gameBoard[2,1]} == "$playerTwoCPU" ]]; then
 			gameBoard[1,1]=$playerTwoCPU
@@ -192,7 +192,6 @@ checkWinBlockPlay(){
 		elif [[ ${gameBoard[0,2]} == "$playerTwoCPU"  && ${gameBoard[1,1]} == "+" && ${gameBoard[2,0]} == "$playerTwoCPU" ]]; then
 			gameBoard[1,1]=$playerTwoCPU
 			return
-
 		elif [[ ${gameBoard[0,0]} == "$playerOne"  && ${gameBoard[0,1]} == "$playerOne" && ${gameBoard[0,2]} == "+" ]]; then
 			gameBoard[0,2]=$playerTwoCPU
 			return
@@ -200,13 +199,13 @@ checkWinBlockPlay(){
 			gameBoard[1,2]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[2,0]} == "$playerOne"  && ${gameBoard[2,1]} == "$playerOne" && ${gameBoard[2,2]} == "+" ]]; then
-			gameBoard[0,2]=$playerTwoCPU
+			gameBoard[2,2]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,0]} == "$playerOne"  && ${gameBoard[1,0]} == "$playerOne" && ${gameBoard[2,0]} == "+" ]]; then
 			gameBoard[2,0]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,1]} == "$playerOne"  && ${gameBoard[1,1]} == "$playerOne" && ${gameBoard[2,1]} == "+" ]]; then
-			gameBoard[2,2]=$playerTwoCPU
+			gameBoard[2,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,2]} == "$playerOne"  && ${gameBoard[1,2]} == "$playerOne" && ${gameBoard[2,2]} == "+" ]]; then
 			gameBoard[2,2]=$playerTwoCPU
@@ -246,13 +245,13 @@ checkWinBlockPlay(){
 			gameBoard[0,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[1,0]} == "$playerOne"  && ${gameBoard[1,1]} == "+" && ${gameBoard[1,2]} == "$playerOne" ]]; then
-			gameBoard[1,2]=$playerTwoCPU
+			gameBoard[1,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[2,0]} == "$playerOne"  && ${gameBoard[2,1]} == "+" && ${gameBoard[2,2]} == "$playerOne" ]]; then
 			gameBoard[2,1]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,0]} == "$playerOne"  && ${gameBoard[1,0]} == "+" && ${gameBoard[2,0]} == "$playerOne" ]]; then
-			gameBoard[2,0]=$playerTwoCPU
+			gameBoard[1,0]=$playerTwoCPU
 			return
 		elif [[ ${gameBoard[0,1]} == "$playerOne"  && ${gameBoard[1,1]} == "+" && ${gameBoard[2,1]} == "$playerOne" ]]; then
 			gameBoard[1,1]=$playerTwoCPU
@@ -268,47 +267,48 @@ checkWinBlockPlay(){
 			return
 		#Corners
          elif [[ ${gameBoard[0,0]} == "+" ]]; then
-         	gameBoard[0,0]=$playerTwoCPU
+         		gameBoard[0,0]=$playerTwoCPU
 				return
          elif [[ ${gameBoard[0,2]} == "+" ]]; then
                gameBoard[0,2]=$playerTwoCPU
-					return
+				return
          elif [[ ${gameBoard[2,0]} == "+" ]]; then
-         	gameBoard[2,0]=$playerTwoCPU
+         		gameBoard[2,0]=$playerTwoCPU
 				return
          elif [[ ${gameBoard[2,2]} == "+" ]]; then
-         	gameBoard[2,2]=$playerTwoCPU
+         		gameBoard[2,2]=$playerTwoCPU
 				return
       # Center
          elif [[ ${gameBoard[1,1]} == "+" ]]; then
-               gameBoard[1,1]=$playerTwoCPU
-					return
+				gameBoard[1,1]=$playerTwoCPU
+				return
       # Sides
          elif [[ ${gameBoard[0,1]} == "+" ]]; then
-               gameBoard[0,1]=$playerTwoCPU
-					return
+               	gameBoard[0,1]=$playerTwoCPU
+				return
          elif [[ ${gameBoard[1,0]} == "+" ]]; then
-               gameBoard[1,0]=$playerTwoCPU
-					return
+            	gameBoard[1,0]=$playerTwoCPU
+				return
          elif [[ ${gameBoard[1,2]} == "+" ]]; then
-               gameBoard[1,2]=$playerTwoCPU
-					return
+				gameBoard[1,2]=$playerTwoCPU
+				return
          elif [[ ${gameBoard[2,1]} == "+" ]]; then
-               gameBoard[2,1]=$playerTwoCPU
-					return
+				gameBoard[2,1]=$playerTwoCPU
+				return
 		fi
 }
 wantToPlay(){
    read -p "Would You Like To Start game Y/N ?" isStart
-   if [[ $isStart == Y || $isStart == y ]]; then
-	read -p "Would You Like To Toss..? Y/N " isToss
-	if [[ $isToss == Y || $isToss == y ]]; then
-		toss
+   
+	if [[ $isStart == Y || $isStart == y ]]; then
+		read -p "Would You Like To Toss..? Y/N " isToss
+		if [[ $isToss == Y || $isToss == y ]]; then
+			toss
+		else
+			echo "Okay..Starting Game"
+			startToPlay
+		fi
 	else
-		echo "Okay..Starting Game"
-		startToPlay
-	fi
-   else
       	echo "Exiting..."
 	exit
    fi
