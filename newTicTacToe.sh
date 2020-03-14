@@ -10,7 +10,7 @@ declare -A gameBoard
 BOARDSIZE=0
 PLAYERONE="X"
 PLAYERTWO="O"
-TOTALCELLS=$(($BOARDSIZE*$BOARDSIZE))
+TOTALCELLS=0
 
 player="a"
 noOfTimePlay=0
@@ -47,14 +47,14 @@ setSign()
 	if [[ $((RANDOM%2)) -eq 0 ]]
 	then
 		echo
-      echo "Player1 ==> X"
-      echo "Player2 ==> O"
+		echo "Player1 ==> X"
+		echo "Player2 ==> O"
 		PLAYERONE="X"
 		PLAYERTWO="O"
 	else
 		echo
 		echo "Player1 ==> X"
-      echo "Player2 ==> O"
+      		echo "Player2 ==> O"
 	fi
 }
 toss()
@@ -108,40 +108,41 @@ checkWin()
 			fi
 			if [[ ${gameBoard[$column,$row]} == $player ]]
 			then
-            ((verticalCheck++))
+            			((verticalCheck++))
 			fi
 			if [[ $row -eq $column ]]
 			then
-            if [[ ${gameBoard[$row,$column]} == $player ]]
+			 	if [[ ${gameBoard[$row,$column]} == $player ]]
 				then
-               ((digonalCheck1++))
-            fi
-         fi
+			       		((digonalCheck1++))
+			    	fi
+			 fi
 			if [[ $(($row + $column)) -eq $(($BOARDSIZE+1)) ]]
 			then
-               if [[ ${gameBoard[$row,$column]} == $player ]]
-					then
-                  ((digonalCheck2++))
-               fi
-            fi
-      done
+			        if [[ ${gameBoard[$row,$column]} == $player ]]
+				then
+				  ((digonalCheck2++))
+			       fi
+			 fi
+      		done
 		if [[ $horizontalCheck -eq $BOARDSIZE || $verticalCheck -eq $BOARDSIZE || $digonalCheck1 -eq $BOARDSIZE || $digonalCheck2 -eq $BOARDSIZE ]]
 		then
-               checkWinFlag=1
-               checkWinner
-      fi
+		       checkWinFlag=1
+		       checkWinner
+      		fi
 	done
 }
 userTurn()
 {
 	local position=$1
 	local player=$2
-   row=$(($(($position-1))/$BOARDSIZE))
-   column=$(($(($position-1))%$BOARDSIZE))
+	row=$(($(($position-1))/$BOARDSIZE))
+	column=$(($(($position-1))%$BOARDSIZE))
 
-	if [[ ${gameBoard[$(($row+1)),$(($column+1))]} == X || ${gameBoard[$(($row+1)),$(($column+1))]} == O || $position -gt $TOTALCELLS ]]; then
-	   echo "Sorry Position Occupied / Invalid Cell Number"
-      ((noOfTimePlay--))
+	if [[ ${gameBoard[$(($row+1)),$(($column+1))]} == X || ${gameBoard[$(($row+1)),$(($column+1))]} == O || $position -gt $TOTALCELLS ]]
+	then
+	   	echo "Sorry Position Occupied / Invalid Cell Number"
+      		((noOfTimePlay--))
 		userTurn
 	else
 		gameBoard[$(($row+1)),$(($column+1))]=$player
@@ -155,8 +156,9 @@ computerTurn(){
 		row=$(($(($randomGeneratedNumber-1))/$BOARDSIZE))
    		column=$(($(($randomGeneratedNumber-1))%$BOARDSIZE))
 
-		if [[ ${gameBoard[$(($row+1)),$(($column+1))]} == - ]]; then
-		   gameBoard[$(($row+1)),$(($column+1))]=$player
+		if [[ ${gameBoard[$(($row+1)),$(($column+1))]} == - ]]
+		then
+		   	gameBoard[$(($row+1)),$(($column+1))]=$player
 		else
 			computerTurn $player
 		fi
@@ -174,12 +176,12 @@ checkWinner(){
 }
 wantToPlay(){
 	read -p "Would You Like To Toss..? Y/N " isToss
-		if [[ $isToss == Y || $isToss == y ]]; then
-			toss
-		else
-			echo "Okay..Starting Game"
-			startToPlay
-		fi
+	if [[ $isToss == Y || $isToss == y ]]; then
+		toss
+	else
+		echo "Okay..Starting Game"
+		startToPlay
+	fi
 }
 initializeBoard
 displayBoard
